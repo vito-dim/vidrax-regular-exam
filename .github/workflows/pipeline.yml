@@ -1,0 +1,27 @@
+name: Build and Test-UNIT
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build-test-unit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Ceckout GIT repository
+      uses: actions/checkout@v4
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20.x
+        cache: 'npm'
+    - name: Install NPM packages
+      run: npm install
+    - name: Run UNIT tests
+      run: npm run test:unit
+    - name: Display Softuni USERNAME
+      run: echo "vidrax"

@@ -1,10 +1,11 @@
-name: Build and Test-UNIT
+name: Build and Test
 
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
 
@@ -25,3 +26,24 @@ jobs:
       run: npm run test:unit
     - name: Display Softuni USERNAME
       run: echo "vidrax"
+
+  build-test-ui:
+    needs: build-test-unit
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Ceckout GIT repository
+      uses: actions/checkout@v4
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20.x
+        cache: 'npm'
+    - name: Install NPM packages
+      run: npm install
+    - name: Install Playwright browsers
+      run: npx playwright install
+    - name: Start application in background mode
+      run: npm run start &
+    - name: Run UI tests
+      run: npm run test:ui

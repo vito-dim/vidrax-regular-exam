@@ -47,3 +47,15 @@ jobs:
       run: npm run start &
     - name: Run UI tests
       run: npm run test:ui
+
+  deploy-app:
+    if: github.ref == 'refs/heads/main'
+    needs: build-test-ui
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy application to production
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.RENDER_TOKEN }}
+          api-key: ${{ secrets.RENDER_KEY }}
